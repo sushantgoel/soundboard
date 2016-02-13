@@ -53,14 +53,13 @@ namespace UWPSoundBoard
 
         private void BackButton_Click(object sender, RoutedEventArgs e)
         {
-            SoundManager.getAllSounds(sounds);
-            CategoryTextBlock.Text = "All Sounds";
-            MenuItemsListView.SelectedItem = null;
-            BackButton.Visibility = Visibility.Collapsed;
+            goBack();
         }
 
         private void SearchAutoSuggestBox_TextChanged(AutoSuggestBox sender, AutoSuggestBoxTextChangedEventArgs args)
         {
+            if (String.IsNullOrEmpty(sender.Text)) goBack();
+
             SoundManager.getAllSounds(sounds);
             suggestions = sounds.Where(p => p.Name.StartsWith(sender.Text)).Select(p => p.Name).ToList();
             SearchAutoSuggestBox.ItemsSource = suggestions;
@@ -125,6 +124,14 @@ namespace UWPSoundBoard
             e.DragUIOverride.IsCaptionVisible = true;
             e.DragUIOverride.IsContentVisible = true;
             e.DragUIOverride.IsGlyphVisible = true;
+        }
+
+        private void goBack()
+        {
+            SoundManager.getAllSounds(sounds);
+            CategoryTextBlock.Text = "All Sounds";
+            MenuItemsListView.SelectedItem = null;
+            BackButton.Visibility = Visibility.Collapsed;
         }
     }
 }
